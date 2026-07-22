@@ -17,4 +17,8 @@ List of pages:
 
 [These pages on GitHub](https://github.com/mambelli/cookies)
 
+Links:
+
+-[My Cool Website](coolwebsite.html)
+
 by VALOR JROTC
