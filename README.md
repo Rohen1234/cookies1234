@@ -1,5 +1,8 @@
 # cookies
-Coolest Fermilab project ever
+
+Coolest Fermilab project ever.
+
+[Notes for the coding classes](classes.html)
 
 List of pages:
 - [Diego's page](Diego.html)
