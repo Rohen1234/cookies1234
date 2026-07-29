@@ -12,5 +12,7 @@ List of pages:
 - [FIND SHOWER ASAP](shower%20scanner.html.html)
 - [Platformer](platformer.html)
 - [Lights](anims.html)
+- [HTML Examples](expl.html)
+- [Dodge](laserdodge.html)
 
 by VALOR JROTC
