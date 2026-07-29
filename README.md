@@ -20,6 +20,7 @@ List of pages:
 - [PCs](pcs.html)
 - [PCs for Gaming](pcs2.html)
 - [My Cool Website](coolwebsite.html)
+- [Raqeebat's page](Raqy.html)
 
 [These pages on GitHub](https://github.com/mambelli/cookies)
 
