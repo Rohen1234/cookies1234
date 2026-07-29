@@ -17,11 +17,12 @@ List of pages:
 - [HTML Examples](expl.html)
 - [Dodge](laserdodge.html)
 - [Cammyissocool](Camryn.html)
+- [Dodge 2!](dodge2.html)
+- [PCs](pcs.html)
+- [PCs for Gaming](pcs2.html)
+- [My Cool Website](coolwebsite.html)
+- [Raqeebat's page](Raqy.html)
 
 [These pages on GitHub](https://github.com/mambelli/cookies)
 
-Links:
-
--[My Cool Website](coolwebsite.html)
-
-by VALOR JROTC
+by VALOR JROTC 2026 cohort
