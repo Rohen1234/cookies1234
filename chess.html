@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chess vs AI</title>
+  <title>Chess vs Stockfish AI</title>
   
   <!-- Chessboard.js CSS -->
   <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
@@ -194,7 +194,7 @@
 <body>
 
   <header>
-    <a href="#" class="logo">ChessHub vs AI</a>
+    <a href="#" class="logo">ChessHub vs Stockfish</a>
   </header>
 
   <div class="container">
@@ -203,8 +203,8 @@
       <!-- AI Opponent -->
       <div class="player-card">
         <div class="player-info">
-          <div class="avatar">AI</div>
-          <span>Computer Bot</span>
+          <div class="avatar">SF</div>
+          <span>Stockfish Engine</span>
         </div>
         <div id="black-timer" class="timer">05:00</div>
       </div>
@@ -247,6 +247,41 @@
     let timerInterval = null;
     let gameStarted = false;
 
+    // Load Stockfish Engine from CDN via Web Worker
+    let stockfish = new Worker('https://cdnjs.cloudflare.com/ajax/libs/stockfish.js/10.0.2/stockfish.js');
+
+    // Initialize Stockfish options
+    stockfish.postMessage('uci');
+    stockfish.postMessage('ucinewgame');
+
+    // Listen to Stockfish engine messages
+    stockfish.onmessage = function(event) {
+      let line = event.data;
+
+      // Look for the "bestmove" engine output line
+      if (line.startsWith('bestmove')) {
+        let parts = line.split(' ');
+        let bestMove = parts[1];
+
+        if (bestMove) {
+          let source = bestMove.substring(0, 2);
+          let target = bestMove.substring(2, 4);
+          let promotion = bestMove.length > 4 ? bestMove.substring(4, 5) : 'q';
+
+          game.move({
+            from: source,
+            to: target,
+            promotion: promotion
+          });
+
+          board.position(game.fen());
+          updateStatus();
+          updateMoveHistory();
+          updateTimerHighlight();
+        }
+      }
+    };
+
     function formatTime(seconds) {
       let min = Math.floor(seconds / 60);
       let sec = seconds % 60;
@@ -262,7 +297,7 @@
         if (game.turn() === 'w') {
           whiteTime--;
           $('#white-timer').text(formatTime(whiteTime));
-          if (whiteTime <= 0) handleTimeOut('Computer');
+          if (whiteTime <= 0) handleTimeOut('Stockfish');
         } else {
           blackTime--;
           $('#black-timer').text(formatTime(blackTime));
@@ -286,46 +321,35 @@
       }
     }
 
-    function makeAIMove() {
+    function requestStockfishMove() {
       if (game.game_over()) return;
 
-      let possibleMoves = game.moves();
+      // Pass the current position (FEN) to Stockfish
+      stockfish.postMessage('position fen ' + game.fen());
 
-      // Game over condition check
-      if (possibleMoves.length === 0) return;
-
-      // Select a random valid move
-      let randomIdx = Math.floor(Math.random() * possibleMoves.length);
-      game.move(possibleMoves[randomIdx]);
-
-      // Update board visual and UI state
-      board.position(game.fen());
-      updateStatus();
-      updateMoveHistory();
-      updateTimerHighlight();
+      // Search depth = 10 moves ahead (hard difficulty)
+      // Increase to depth 15 for extreme difficulty
+      stockfish.postMessage('go depth 10');
     }
 
     function onDragStart(source, piece, position, orientation) {
       if (game.game_over()) return false;
 
-      // Prevent player from moving Black pieces (AI's turn/pieces)
+      // Only allow White pieces to be dragged
       if (game.turn() === 'b' || piece.search(/^b/) !== -1) {
         return false;
       }
     }
 
     function onDrop(source, target) {
-      // Validate human move
       let move = game.move({
         from: source,
         to: target,
         promotion: 'q'
       });
 
-      // Illegal move
       if (move === null) return 'snapback';
 
-      // Start clock on first move
       if (!gameStarted) {
         gameStarted = true;
         startTimer();
@@ -335,8 +359,8 @@
       updateMoveHistory();
       updateTimerHighlight();
 
-      // Trigger AI move after a slight delay (250ms feels natural)
-      window.setTimeout(makeAIMove, 250);
+      // Ask Stockfish for a response move
+      requestStockfishMove();
     }
 
     function onSnapEnd() {
@@ -347,7 +371,7 @@
       let status = '';
 
       if (game.in_checkmate()) {
-        let winner = game.turn() === 'b' ? 'You win!' : 'Computer wins!';
+        let winner = game.turn() === 'b' ? 'You win!' : 'Stockfish wins!';
         status = `Game over! Checkmate — ${winner}`;
         clearInterval(timerInterval);
       } else if (game.in_draw()) {
@@ -357,7 +381,7 @@
         if (game.turn() === 'w') {
           status = 'Your turn (White)';
         } else {
-          status = 'Computer is thinking...';
+          status = 'Stockfish is calculating...';
         }
         
         if (game.in_check()) {
@@ -397,6 +421,8 @@
       blackTime = 300;
       gameStarted = false;
       clearInterval(timerInterval);
+
+      stockfish.postMessage('ucinewgame');
 
       $('#white-timer').text(formatTime(whiteTime)).addClass('active');
       $('#black-timer').text(formatTime(blackTime)).removeClass('active');
