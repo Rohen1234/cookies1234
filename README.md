@@ -16,6 +16,7 @@ List of pages:
 - [Lights](anims.html)
 - [HTML Examples](expl.html)
 - [Dodge](laserdodge.html)
+- [Cammyissocool](Camryn.html)
 - [Dodge 2!](dodge2.html)
 - [PCs](pcs.html)
 - [PCs for Gaming](pcs2.html)
