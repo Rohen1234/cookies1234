@@ -10,6 +10,8 @@ List of pages:
 - [Marco's page](marco.html)
 - [Josh's page (best page)](shimp.html)
 - [FIND SHOWER ASAP](shower%20scanner.html.html)
+- [Platformer](platformer.html)
+- [Lights](anims.html)
 
 [These pages on GitHub](https://github.com/mambelli/cookies)
 
