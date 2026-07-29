@@ -11,4 +11,6 @@ List of pages:
 - [Josh's page (best page)](shimp.html)
 - [FIND SHOWER ASAP](shower%20scanner.html.html)
 
+[These pages on GitHub](https://github.com/mambelli/cookies)
+
 by VALOR JROTC
