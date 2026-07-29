@@ -12,6 +12,8 @@ List of pages:
 - [FIND SHOWER ASAP](shower%20scanner.html.html)
 - [Platformer](platformer.html)
 - [Lights](anims.html)
+- [HTML Examples](expl.html)
+- [Dodge](laserdodge.html)
 
 [These pages on GitHub](https://github.com/mambelli/cookies)
 
